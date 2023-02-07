@@ -1,5 +1,4 @@
 <?php
-
 /*Questions Marks
 HIDE QUESTION
 Have the function QuestionsMarks(str) take the str string parameter, which will contain single digit numbers, letters, and question marks,
@@ -10,30 +9,54 @@ If there aren't any two numbers that add up to 10 in the string, then your progr
 For example: if str is "arrb6???4xxbl5???eee5" then your program should return true because there are exactly 3 question marks between 6 and 4,
 and 3 question marks between 5 and 5 at the end of the string.*/
 
-$string = "9???1???9??1???9";
+$string = "aa6?9";
 
-$num = preg_replace('/[^?0-9]/', '', $string);
 
-function QuestionsMarks($str): string
+function QuestionsMarks($str)
 {
+    $str = preg_replace('/[^?0-9]/', '', $str);
+    $justNum = preg_replace('/[^0-9]/', "", $str);
+
     $ten = 10;
+    $tenCounter = null;
+    $equal = null;
+    $match = null;
 
-    for ($i = 0; $i < strlen($str) - 3; $i++) {
+    //This loops through the filtered string that cointains only numbers and check how many of the
+    //numbers add up to 10.
+    for ($j = 0; $j < strlen($justNum) - 1; $j++) {
 
-
-        if (($str[$i] === '?') && ($str[$i] === $str[$i]) && ((intval($str[$i - 1]) + intval($str[$i + 3])) == $ten)) {
-
-            return "true";
-
+        if (((intval($justNum[$j]) + intval($justNum[$j + 1])) == $ten)) {
+            echo intval($justNum[$j]) . intval($justNum[$j + 1]) . "<br>";
+            $tenCounter++;
         }
-
     }
 
+    if ($tenCounter) {
+        for ($i = 0; $i < strlen($str) - 4; $i++) {
 
-    // code goes here
+            if (((intval($str[$i]) + intval($str[$i + 4])) == $ten)) {
+                $equal++;
+
+                if (($str[$i + 1] === '?') && ($str[$i + 1] === $str[$i + 2] && $str[$i + 3])) {
+                    $match += 1;
+                }
+            }
+        }
+
+    } else {
         return "false";
+    }
+
+    if ($tenCounter <= $match) {
+        return "true";
+    } else {
+        return "false";
+    }
 
 
 }
 
-echo QuestionsMarks($num);
+echo QuestionsMarks($string);
+
+
